@@ -2,21 +2,30 @@ import { Box, Button, TextField, MenuItem, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-const FitnessStatus = ({ nextStep, prevStep }) => {
+const FitnessStatus = ({ nextStep, prevStep, formData }) => {
   const formik = useFormik({
-    initialValues: {
+    initialValues: formData || {
       height: "",
       weight: "",
       activityLevel: "",
       stepCount: "",
     },
     validationSchema: Yup.object({
-      height: Yup.number().positive("Enter a valid height").required("Required"),
-      weight: Yup.number().positive("Enter a valid weight").required("Required"),
-      activityLevel: Yup.string().required("Required"),
-      stepCount: Yup.number().positive("Enter a valid step count").required("Required"),
+      height: Yup.number()
+        .positive("Enter a valid height")
+        .required("Height is required"),
+      weight: Yup.number()
+        .positive("Enter a valid weight")
+        .required("Weight is required"),
+      activityLevel: Yup.string().required("Activity Level is required"),
+      stepCount: Yup.number()
+        .positive("Enter a valid step count")
+        .required("Step count is required"),
     }),
-    onSubmit: () => nextStep(),
+    onSubmit: (values) => {
+      console.log("Fitness Status Submitted:", values); 
+      nextStep(values);
+    },
   });
 
   return (
@@ -27,14 +36,18 @@ const FitnessStatus = ({ nextStep, prevStep }) => {
         label="Height (cm)"
         type="number"
         {...formik.getFieldProps("height")}
+        error={formik.touched.height && Boolean(formik.errors.height)}
+        helperText={formik.touched.height && formik.errors.height}
         fullWidth
         sx={{ mt: 2 }}
       />
-      
+
       <TextField
         label="Weight (kg)"
         type="number"
         {...formik.getFieldProps("weight")}
+        error={formik.touched.weight && Boolean(formik.errors.weight)}
+        helperText={formik.touched.weight && formik.errors.weight}
         fullWidth
         sx={{ mt: 2 }}
       />
@@ -43,6 +56,8 @@ const FitnessStatus = ({ nextStep, prevStep }) => {
         select
         label="Activity Level"
         {...formik.getFieldProps("activityLevel")}
+        error={formik.touched.activityLevel && Boolean(formik.errors.activityLevel)}
+        helperText={formik.touched.activityLevel && formik.errors.activityLevel}
         fullWidth
         sx={{ mt: 2 }}
       >
@@ -56,6 +71,8 @@ const FitnessStatus = ({ nextStep, prevStep }) => {
         label="Daily Step Count"
         type="number"
         {...formik.getFieldProps("stepCount")}
+        error={formik.touched.stepCount && Boolean(formik.errors.stepCount)}
+        helperText={formik.touched.stepCount && formik.errors.stepCount}
         fullWidth
         sx={{ mt: 2 }}
       />

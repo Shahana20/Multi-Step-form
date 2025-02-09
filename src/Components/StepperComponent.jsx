@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Button, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import PersonalInfo from "./PersonalInfo";
 import FitnessStatus from "./FitnessStatus";
 import HealthAndLifestyle from "./HealthAndLifestyle";
 import WorkoutAndNutrition from "./WorkoutAndNutrition";
+import FitnessDashboard from "./FitnessDashboard";
 
 const steps = ["Basic Info", "Current Fitness", "Health & Lifestyle", "Workout & Nutrition"];
 
@@ -26,7 +28,8 @@ const StepperComponent = () => {
     workoutFrequency: "",
     needDietPlan: "",
   });
-
+  const navigate = useNavigate();
+  
   const nextStep = (values) => {
     setFormData((prev) => ({ ...prev, ...values }));
     setActiveStep((prevStep) => prevStep + 1);
@@ -37,7 +40,7 @@ const StepperComponent = () => {
   const submitForm = (values) => {
     setFormData((prev) => ({ ...prev, ...values }));
     console.log("Final Form Data:", { ...formData, ...values });
-    alert("Form Submitted Successfully!");
+    navigate("/dashboard", { state: { formData: { ...formData, ...values } } });
   };
 
   return (
@@ -55,13 +58,10 @@ const StepperComponent = () => {
         {activeStep === 1 && <FitnessStatus nextStep={nextStep} prevStep={prevStep} />}
         {activeStep === 2 && <HealthAndLifestyle nextStep={nextStep} prevStep={prevStep} />}
         {activeStep === 3 && <WorkoutAndNutrition prevStep={prevStep} submitForm={submitForm} />}
+        {activeStep === 4 && <FitnessDashboard formData={formData} />}
       </Box>
 
-      {activeStep === steps.length && (
-        <Typography variant="h5" sx={{ mt: 5, textAlign: "center" }}>
-          🎉 Thank you for completing the setup!
-        </Typography>
-      )}
+      
     </Box>
   );
 };

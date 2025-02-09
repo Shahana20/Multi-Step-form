@@ -20,7 +20,10 @@ const HealthAndLifestyle = ({ nextStep, prevStep }) => {
         .required("Required"),
       dietaryPreference: Yup.string().required("Required"),
     }),
-    onSubmit: () => nextStep(),
+    onSubmit: (values) => {
+      console.log("Health & Lifestyle Data:", values); 
+      nextStep(values);
+    },
   });
 
   return (
@@ -31,6 +34,8 @@ const HealthAndLifestyle = ({ nextStep, prevStep }) => {
         label="Water Intake (Liters/Day)"
         type="number"
         {...formik.getFieldProps("waterIntake")}
+        error={formik.touched.waterIntake && Boolean(formik.errors.waterIntake)}
+        helperText={formik.touched.waterIntake && formik.errors.waterIntake}
         fullWidth
         sx={{ mt: 2 }}
       />
@@ -39,6 +44,8 @@ const HealthAndLifestyle = ({ nextStep, prevStep }) => {
         label="Sleep Hours (Per Night)"
         type="number"
         {...formik.getFieldProps("sleepHours")}
+        error={formik.touched.sleepHours && Boolean(formik.errors.sleepHours)}
+        helperText={formik.touched.sleepHours && formik.errors.sleepHours}
         fullWidth
         sx={{ mt: 2 }}
       />
@@ -47,6 +54,8 @@ const HealthAndLifestyle = ({ nextStep, prevStep }) => {
         select
         label="Dietary Preference"
         {...formik.getFieldProps("dietaryPreference")}
+        error={formik.touched.dietaryPreference && Boolean(formik.errors.dietaryPreference)}
+        helperText={formik.touched.dietaryPreference && formik.errors.dietaryPreference}
         fullWidth
         sx={{ mt: 2 }}
       >

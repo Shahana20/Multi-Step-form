@@ -17,7 +17,10 @@ const WorkoutAndNutrition = ({ prevStep, submitForm }) => {
         .required("Required"),
       needDietPlan: Yup.string().required("Required"),
     }),
-    onSubmit: submitForm,
+    onSubmit: (values) => {
+      console.log("Workout & Nutrition Data:", values); 
+      submitForm(values);
+    },
   });
 
   return (
@@ -28,6 +31,8 @@ const WorkoutAndNutrition = ({ prevStep, submitForm }) => {
         select
         label="Preferred Workout Type"
         {...formik.getFieldProps("workoutType")}
+        error={formik.touched.workoutType && Boolean(formik.errors.workoutType)}
+        helperText={formik.touched.workoutType && formik.errors.workoutType}
         fullWidth
         sx={{ mt: 2 }}
       >
@@ -41,6 +46,8 @@ const WorkoutAndNutrition = ({ prevStep, submitForm }) => {
         label="Workout Frequency (Days/Week)"
         type="number"
         {...formik.getFieldProps("workoutFrequency")}
+        error={formik.touched.workoutFrequency && Boolean(formik.errors.workoutFrequency)}
+        helperText={formik.touched.workoutFrequency && formik.errors.workoutFrequency}
         fullWidth
         sx={{ mt: 2 }}
       />
@@ -49,6 +56,8 @@ const WorkoutAndNutrition = ({ prevStep, submitForm }) => {
         select
         label="Do you need a diet plan?"
         {...formik.getFieldProps("needDietPlan")}
+        error={formik.touched.needDietPlan && Boolean(formik.errors.needDietPlan)}
+        helperText={formik.touched.needDietPlan && formik.errors.needDietPlan}
         fullWidth
         sx={{ mt: 2 }}
       >
